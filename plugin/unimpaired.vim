@@ -77,6 +77,21 @@ nmap [o <Plug>unimpairedOPrevious
 " }}}1
 " Diff {{{1
 
+nmap [c <Plug>unimpairedDiffPrevious
+nmap ]c <Plug>unimpairedDiffNext
+nnoremap <silent> <Plug>unimpairedDiffPrevious   :<C-U>call <SID>DiffPrevious(v:count1)<CR>
+nnoremap <silent> <Plug>unimpairedDiffNext :<C-U>call <SID>DiffNext(v:count1)<CR>
+
+function! s:DiffPrevious(count) abort
+  execute 'normal! '. a:count . '[c'
+  silent! call repeat#set("\<Plug>unimpairedDiffPrevious", a:count)
+endfunction
+
+function! s:DiffNext(count) abort
+  execute 'normal! '. a:count . ']c'
+  silent! call repeat#set("\<Plug>unimpairedDiffNext", a:count)
+endfunction
+
 nmap [n <Plug>unimpairedContextPrevious
 nmap ]n <Plug>unimpairedContextNext
 omap [n <Plug>unimpairedContextPrevious
