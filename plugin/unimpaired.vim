@@ -88,8 +88,20 @@ function! s:RepeatDefaultKey(plug, key, count) abort
   execute 'normal! '. a:count . a:key
   execute 'silent! call repeat#set("\'.a:plug.'", '.a:count.')'
 endfunction
-call s:MapRepeatDefaultKey('[c','DiffPrevious')
+call s:MapRepeatDefaultKey('[c','DiffPrev')
 call s:MapRepeatDefaultKey(']c','DiffNext')
+
+call s:MapRepeatDefaultKey(']m','MethodJumpNextBegin')
+call s:MapRepeatDefaultKey(']M','MethodJumpNextEnd')
+call s:MapRepeatDefaultKey('[m','MethodJumpPrevBegin')
+call s:MapRepeatDefaultKey('[M','MethodJumpPrevEnd')
+
+call s:MapRepeatDefaultKey('zj','FoldJumpDownBegin')
+call s:MapRepeatDefaultKey('zk','FoldJumpPrevEnd')
+
+call s:MapRepeatDefaultKey('g+','OlderState')
+call s:MapRepeatDefaultKey('g-','NewerState')
+
 
 " }}}1
 " Diff                                                                    {{{1
