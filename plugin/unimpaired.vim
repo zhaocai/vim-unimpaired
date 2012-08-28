@@ -8,7 +8,7 @@ if exists("g:loaded_unimpaired") || &cp || v:version < 700
 endif
 let g:loaded_unimpaired = 1
 
-" Next and previous {{{1
+" Next and previous                                                       {{{1
 
 function! s:MapNextFamily(map,cmd)
   let map = '<Plug>unimpaired'.toupper(a:map)
@@ -75,22 +75,25 @@ nmap ]o <Plug>unimpairedONext
 nmap [o <Plug>unimpairedOPrevious
 
 " }}}1
-" Diff {{{1
 
-nmap [c <Plug>unimpairedDiffPrevious
-nmap ]c <Plug>unimpairedDiffNext
-nnoremap <silent> <Plug>unimpairedDiffPrevious   :<C-U>call <SID>DiffPrevious(v:count1)<CR>
-nnoremap <silent> <Plug>unimpairedDiffNext :<C-U>call <SID>DiffNext(v:count1)<CR>
+" Repeat Default Keys                                                     {{{1
 
-function! s:DiffPrevious(count) abort
-  execute 'normal! '. a:count . '[c'
-  silent! call repeat#set("\<Plug>unimpairedDiffPrevious", a:count)
+function! s:MapRepeatDefaultKey(key,name)
+  let name = '<Plug>unimpaired'.a:name
+  execute 'nmap '.a:key.'  '.name
+  execute "nnoremap <silent> ".name." :<C-U>call <SID>RepeatDefaultKey('".name."', '".a:key."', v:count1)<CR>"
 endfunction
 
-function! s:DiffNext(count) abort
-  execute 'normal! '. a:count . ']c'
-  silent! call repeat#set("\<Plug>unimpairedDiffNext", a:count)
+function! s:RepeatDefaultKey(plug, key, count) abort
+  execute 'normal! '. a:count . a:key
+  execute 'silent! call repeat#set("\'.a:plug.'", '.a:count.')'
 endfunction
+call s:MapRepeatDefaultKey('[c','DiffPrevious')
+call s:MapRepeatDefaultKey(']c','DiffNext')
+
+" }}}1
+" Diff                                                                    {{{1
+
 
 nmap [n <Plug>unimpairedContextPrevious
 nmap ]n <Plug>unimpairedContextNext
@@ -137,7 +140,7 @@ function! s:ContextMotion(reverse)
 endfunction
 
 " }}}1
-" Line operations {{{1
+" Line operations                                                         {{{1
 
 function! s:BlankUp(count) abort
   put!=repeat(nr2char(10), a:count)
@@ -175,7 +178,7 @@ xmap [e <Plug>unimpairedMoveUp
 xmap ]e <Plug>unimpairedMoveDown
 
 " }}}1
-" Encoding and decoding {{{1
+" Encoding and decoding                                                   {{{1
 
 function! s:StringEncode(str)
   let map = {"\n": 'n', "\r": 'r', "\t": 't', "\b": 'b', "\f": '\f', '"': '"', '\': '\'}
@@ -260,7 +263,7 @@ function! s:Base64Decode(str)
     endwhile
 endfunction
 
-" HTML entities {{{2
+" HTML entities                                                           {{{2
 
 let g:unimpaired_html_entities = {
       \ 'nbsp':     160, 'iexcl':    161, 'cent':     162, 'pound':    163,
